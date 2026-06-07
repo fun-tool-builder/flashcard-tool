@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hebrew Flashcards</title>
+<title>Language Flashcards</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,18 +33,17 @@
   body { font-family: -apple-system,'Helvetica Neue',sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
   .app { width: 100%; max-width: 600px; }
 
-  /* Auth */
   .auth-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2rem; }
   .auth-title { font-size: 20px; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
   .auth-sub { font-size: 13px; color: var(--text3); margin-bottom: 1.5rem; }
   .field { margin-bottom: 1rem; }
   .field label { display: block; font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.35rem; }
-  .field input[type=email], .field input[type=password], .field input[type=number] {
+  .field input[type=email], .field input[type=password], .field input[type=number], .field select {
     width: 100%; padding: 0.6rem 0.75rem; border-radius: var(--radius-sm);
     border: 0.5px solid var(--border-strong); background: var(--surface2);
-    color: var(--text); font-size: 14px;
+    color: var(--text); font-size: 14px; appearance: none; -webkit-appearance: none;
   }
-  .field input:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
+  .field input:focus, .field select:focus { outline: 2px solid var(--blue); outline-offset: 1px; }
   .primary-btn { width: 100%; padding: 0.75rem; border-radius: var(--radius-sm); border: none; background: var(--text); color: var(--bg); font-size: 15px; font-weight: 500; cursor: pointer; transition: opacity 0.12s; margin-top: 0.25rem; }
   .primary-btn:hover { opacity: 0.8; }
   .primary-btn:disabled { opacity: 0.4; cursor: default; }
@@ -52,28 +51,39 @@
   .auth-switch a { color: var(--blue); cursor: pointer; text-decoration: underline; }
   .error-msg { font-size: 13px; color: var(--red); margin-top: 0.5rem; text-align: center; min-height: 1.2em; }
 
-  /* Top bar */
   .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-  .topbar-left { display: flex; align-items: center; gap: 8px; }
   .user-badge { font-size: 12px; color: var(--text3); background: var(--surface2); padding: 3px 10px; border-radius: 20px; }
   .signout-btn { font-size: 12px; color: var(--text3); background: none; border: none; cursor: pointer; text-decoration: underline; }
+  .lang-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--blue-bg); color: var(--blue); }
 
-  /* Upload */
   .upload-zone { background: var(--surface); border: 1.5px dashed var(--border-strong); border-radius: var(--radius); padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.15s; }
   .upload-zone:hover { border-color: var(--text2); }
   .upload-zone input { display: none; }
   .format-box { margin-top: 1rem; background: var(--surface2); border-radius: var(--radius-sm); padding: 0.9rem 1.1rem; }
   .format-box p { font-size: 12px; color: var(--text2); line-height: 2; }
   .format-box code { font-family: 'SF Mono','Menlo',monospace; font-size: 11px; background: var(--border); padding: 1px 5px; border-radius: 3px; }
-  .existing-cards { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+  .existing-cards { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
   .existing-info { font-size: 14px; color: var(--text); }
-  .existing-sub { font-size: 12px; color: var(--text3); margin-top: 2px; }
-  .text-btn { background: none; border: none; cursor: pointer; font-size: 13px; color: var(--blue); text-decoration: underline; }
+  .existing-sub { font-size: 12px; color: var(--text3); margin-top: 3px; display: flex; align-items: center; gap: 6px; }
 
-  /* Setup */
+  /* Language picker modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
+  .modal { background: var(--surface); border-radius: var(--radius); padding: 1.75rem; width: 100%; max-width: 420px; }
+  .modal-title { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 0.35rem; }
+  .modal-sub { font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; }
+  .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
+  .lang-option { padding: 0.65rem 0.9rem; border-radius: var(--radius-sm); border: 0.5px solid var(--border-strong); background: var(--surface2); cursor: pointer; transition: all 0.12s; }
+  .lang-option:hover { border-color: var(--text2); }
+  .lang-option.selected { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .lang-name { font-size: 14px; font-weight: 500; color: inherit; }
+  .lang-sample { font-size: 13px; color: var(--text3); margin-top: 2px; }
+  .lang-option.selected .lang-sample { color: rgba(255,255,255,0.6); }
+  @media (prefers-color-scheme: dark) {
+    .lang-option.selected .lang-sample { color: rgba(0,0,0,0.5); }
+  }
+
   .setup-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.75rem; }
-  .setup-title { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 1.25rem; }
-  .field select { width: 100%; padding: 0.55rem 0.75rem; border-radius: var(--radius-sm); border: 0.5px solid var(--border-strong); background: var(--surface2); color: var(--text); font-size: 14px; appearance: none; -webkit-appearance: none; }
+  .setup-title { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
   .category-chips { display: flex; flex-wrap: wrap; gap: 7px; }
   .chip { padding: 5px 13px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 0.5px solid var(--border-strong); background: var(--surface2); color: var(--text2); transition: all 0.12s; user-select: none; }
   .chip.active { background: var(--text); color: var(--bg); border-color: var(--text); }
@@ -83,7 +93,6 @@
   .start-btn:hover { opacity: 0.8; }
   .start-btn:disabled { opacity: 0.35; cursor: default; }
 
-  /* Study header */
   .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
   .header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .round-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; background: var(--amber-bg); color: var(--amber); }
@@ -93,15 +102,16 @@
   .progress-fill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.3s; }
   .progress-label { font-size: 12px; color: var(--text3); white-space: nowrap; }
 
-  /* Card */
   .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem 2rem; min-height: 210px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; position: relative; transition: border-color 0.15s; }
   .card:hover { border-color: var(--border-strong); }
   .card.flipped { border-color: var(--border-strong); }
   .side-label { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); margin-bottom: 1.1rem; }
-  .card-english { font-size: 26px; font-weight: 500; color: var(--text); line-height: 1.3; }
-  .card-hebrew { font-size: 38px; color: var(--text); direction: rtl; line-height: 1.5; margin-bottom: 0.3rem; }
+  .card-front { font-size: 26px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .card-target { font-size: 38px; color: var(--text); line-height: 1.5; margin-bottom: 0.3rem; }
+  .card-target.rtl { direction: rtl; }
+  .card-target.cjk { font-size: 44px; }
   .card-transliteration { font-size: 15px; color: var(--text2); font-style: italic; margin-bottom: 0.2rem; }
-  .card-english-sub { font-size: 13px; color: var(--text3); }
+  .card-front-sub { font-size: 13px; color: var(--text3); }
   .card-cat-label { position: absolute; top: 0.85rem; left: 1rem; font-size: 10px; color: var(--text3); background: var(--surface2); border-radius: 20px; padding: 2px 9px; }
   .review-btn { position: absolute; top: 0.7rem; right: 0.85rem; background: none; border: 0.5px solid transparent; border-radius: var(--radius-sm); cursor: pointer; font-size: 11px; font-weight: 500; padding: 3px 9px; color: var(--text3); transition: all 0.12s; display: flex; align-items: center; gap: 4px; }
   .review-btn:hover { border-color: var(--review-color); color: var(--review-color); }
@@ -123,7 +133,6 @@
   .key-hints { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
   .key-hint { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); }
 
-  /* Summary */
   .summary { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; text-align: center; }
   .summary-icon { font-size: 44px; margin-bottom: 0.9rem; }
   .summary-title { font-size: 20px; font-weight: 500; color: var(--text); margin-bottom: 0.4rem; }
@@ -142,47 +151,32 @@
 <body>
 <div class="app">
 
-  <!-- Loading -->
-  <div id="loading-section" class="loading">
-    <span class="spinner"></span> Loading...
-  </div>
+  <div id="loading-section" class="loading"><span class="spinner"></span> Loading...</div>
 
   <!-- Auth -->
   <div id="auth-section" style="display:none">
     <div style="text-align:center;margin-bottom:1.5rem">
-      <div style="font-size:22px;font-weight:500;color:var(--text);margin-bottom:0.25rem">Hebrew Flashcards</div>
-      <div style="font-size:13px;color:var(--text3)">Sign in to save your cards and progress</div>
+      <div style="font-size:22px;font-weight:500;color:var(--text);margin-bottom:0.25rem">Language Flashcards</div>
+      <div style="font-size:13px;color:var(--text3)">Study any language with your own word lists</div>
     </div>
     <div class="auth-card">
       <div class="auth-title" id="auth-title">Sign in</div>
       <div class="auth-sub" id="auth-sub">Welcome back</div>
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password">
-      </div>
+      <div class="field"><label>Email</label><input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="field"><label>Password</label><input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password"></div>
       <div class="error-msg" id="auth-error"></div>
       <button class="primary-btn" id="auth-btn" onclick="submitAuth()">Sign in</button>
-      <div class="auth-switch" id="auth-switch">
-        No account? <a onclick="toggleAuthMode()">Sign up free</a>
-      </div>
+      <div class="auth-switch" id="auth-switch">No account? <a onclick="toggleAuthMode()">Sign up free</a></div>
     </div>
     <div style="text-align:center;margin-top:1.25rem">
-      <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)">
-        <i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file
-      </a>
+      <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)"><i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file (Hebrew)</a>
     </div>
   </div>
 
-  <!-- Home: upload or use existing -->
+  <!-- Home -->
   <div id="home-section" style="display:none">
     <div class="topbar">
-      <div class="topbar-left">
-        <span style="font-size:16px;font-weight:500;color:var(--text)">Hebrew Flashcards</span>
-      </div>
+      <div style="font-size:16px;font-weight:500;color:var(--text)">Language Flashcards</div>
       <div style="display:flex;align-items:center;gap:10px">
         <span class="user-badge" id="user-email-badge"></span>
         <button class="signout-btn" onclick="signOut()">sign out</button>
@@ -192,9 +186,12 @@
     <div id="existing-card" style="display:none" class="existing-cards">
       <div>
         <div class="existing-info" id="existing-info"></div>
-        <div class="existing-sub" id="existing-sub"></div>
+        <div class="existing-sub">
+          <span class="lang-badge" id="existing-lang-badge"></span>
+          <span id="existing-sub"></span>
+        </div>
       </div>
-      <button class="primary-btn" style="width:auto;padding:0.5rem 1.25rem;font-size:13px" onclick="goSetup()">Study →</button>
+      <button class="primary-btn" style="width:auto;padding:0.5rem 1.25rem;font-size:13px;white-space:nowrap" onclick="goSetup()">Study →</button>
     </div>
 
     <div id="upload-area">
@@ -207,24 +204,32 @@
       <div class="format-box">
         <p>
           <code>Col A</code> English &nbsp;·&nbsp;
-          <code>Col B</code> Hebrew &nbsp;·&nbsp;
+          <code>Col B</code> Target language &nbsp;·&nbsp;
           <code>Col C</code> Transliteration (optional) &nbsp;·&nbsp;
           <code>Col D</code> Category (optional)<br>
           Header row detected automatically. Newer words go at the bottom.
         </p>
       </div>
       <div style="text-align:center;margin-top:0.75rem">
-        <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)">
-          <i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file
-        </a>
+        <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)"><i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file</a>
       </div>
+    </div>
+  </div>
+
+  <!-- Language picker modal -->
+  <div class="modal-overlay" id="lang-modal" style="display:none" onclick="handleModalClick(event)">
+    <div class="modal">
+      <div class="modal-title">Choose your target language</div>
+      <div class="modal-sub">This sets the text direction and audio pronunciation.</div>
+      <div class="lang-grid" id="lang-grid"></div>
+      <button class="primary-btn" id="lang-confirm-btn" onclick="confirmLanguage()" disabled>Continue →</button>
     </div>
   </div>
 
   <!-- Setup -->
   <div id="setup-section" style="display:none">
     <div class="topbar">
-      <div style="font-size:15px;font-weight:500;color:var(--text)">Hebrew Flashcards</div>
+      <div style="font-size:15px;font-weight:500;color:var(--text)">Language Flashcards</div>
       <div style="display:flex;align-items:center;gap:10px">
         <span class="user-badge" id="user-email-badge2"></span>
         <button class="signout-btn" onclick="signOut()">sign out</button>
@@ -232,13 +237,14 @@
     </div>
     <div class="setup-card">
       <div class="setup-title">Set up your session</div>
-      <div style="font-size:13px;color:var(--text3);margin-bottom:1.25rem" id="setup-count-line"></div>
-
+      <div style="font-size:13px;color:var(--text3);margin-bottom:1.25rem;display:flex;align-items:center;gap:8px">
+        <span id="setup-count-line"></span>
+        <span class="lang-badge" id="setup-lang-badge"></span>
+      </div>
       <div class="field" id="cat-field" style="display:none">
         <label>Category</label>
         <div class="category-chips" id="category-chips"></div>
       </div>
-
       <div class="field">
         <label>Order</label>
         <select id="order-select">
@@ -247,18 +253,16 @@
           <option value="oldest">Oldest first (top of sheet)</option>
         </select>
       </div>
-
       <div class="field">
         <label>How many cards?</label>
         <input type="number" id="n-input" min="1" value="10">
         <div class="count-preview" id="count-preview"></div>
       </div>
-
       <button class="start-btn" id="start-btn" onclick="startSession()">Start →</button>
     </div>
     <div style="display:flex;justify-content:space-between;margin-top:0.9rem">
       <button class="reload-link" onclick="showHome()">← back</button>
-      <button class="reload-link" onclick="replaceCards()">upload new file</button>
+      <button class="reload-link" onclick="document.getElementById('file-input').click()">upload new file</button>
     </div>
   </div>
 
@@ -266,7 +270,7 @@
   <div id="study-section" style="display:none">
     <div class="header">
       <div class="header-left">
-        <span style="font-size:15px;font-weight:500;color:var(--text)">Hebrew Flashcards</span>
+        <span style="font-size:15px;font-weight:500;color:var(--text)">Language Flashcards</span>
         <span class="round-badge" id="round-badge">Round 1</span>
         <span class="cat-badge" id="cat-badge" style="display:none"></span>
       </div>
@@ -282,22 +286,18 @@
         <i class="ti ti-bookmark" aria-hidden="true"></i> <span id="review-btn-label">want to review</span>
       </button>
       <div class="side-label" id="side-label">english</div>
-      <div class="card-english" id="front-text"></div>
-      <div class="card-hebrew" id="back-hebrew" style="display:none"></div>
+      <div class="card-front" id="front-text"></div>
+      <div class="card-target" id="back-target" style="display:none"></div>
       <div class="card-transliteration" id="back-translit" style="display:none"></div>
-      <div class="card-english-sub" id="back-english" style="display:none"></div>
+      <div class="card-front-sub" id="back-english" style="display:none"></div>
       <div class="audio-chip" id="audio-chip" style="display:none">
         <span class="key-chip">A</span>
-        <span id="audio-status">read hebrew</span>
+        <span id="audio-status">hear it</span>
       </div>
     </div>
     <div class="answer-row" id="answer-row" style="display:none">
-      <button class="answer-btn correct" onclick="markAnswer(true)">
-        <i class="ti ti-check" aria-hidden="true"></i> Got it <span class="key-chip" style="margin-left:4px">↑</span>
-      </button>
-      <button class="answer-btn incorrect" onclick="markAnswer(false)">
-        <i class="ti ti-x" aria-hidden="true"></i> Missed it <span class="key-chip" style="margin-left:4px">↓</span>
-      </button>
+      <button class="answer-btn correct" onclick="markAnswer(true)"><i class="ti ti-check" aria-hidden="true"></i> Got it <span class="key-chip" style="margin-left:4px">↑</span></button>
+      <button class="answer-btn incorrect" onclick="markAnswer(false)"><i class="ti ti-x" aria-hidden="true"></i> Missed it <span class="key-chip" style="margin-left:4px">↓</span></button>
     </div>
     <div class="stats-strip">
       <div class="stat green"><div class="stat-num" id="stat-correct">0</div><div class="stat-label">correct</div></div>
@@ -333,38 +333,53 @@ const SUPABASE_URL = 'https://zlrqzrahkrcoztockexy.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Cu5128PS0X33PzTCnSQVLg_K5Ec0CaM';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ── Language definitions ──
+const LANGUAGES = [
+  { code: 'he', name: 'Hebrew',     sample: 'שָׁלוֹם',     speechLang: 'he-IL', rtl: true,  cjk: false },
+  { code: 'ar', name: 'Arabic',     sample: 'مرحبا',       speechLang: 'ar-SA', rtl: true,  cjk: false },
+  { code: 'el', name: 'Greek',      sample: 'γεια σας',    speechLang: 'el-GR', rtl: false, cjk: false },
+  { code: 'ru', name: 'Russian',    sample: 'привет',      speechLang: 'ru-RU', rtl: false, cjk: false },
+  { code: 'es', name: 'Spanish',    sample: 'hola',        speechLang: 'es-ES', rtl: false, cjk: false },
+  { code: 'fr', name: 'French',     sample: 'bonjour',     speechLang: 'fr-FR', rtl: false, cjk: false },
+  { code: 'de', name: 'German',     sample: 'Guten Tag',   speechLang: 'de-DE', rtl: false, cjk: false },
+  { code: 'it', name: 'Italian',    sample: 'ciao',        speechLang: 'it-IT', rtl: false, cjk: false },
+  { code: 'pt', name: 'Portuguese', sample: 'olá',         speechLang: 'pt-PT', rtl: false, cjk: false },
+  { code: 'ja', name: 'Japanese',   sample: 'こんにちは',   speechLang: 'ja-JP', rtl: false, cjk: true  },
+  { code: 'zh', name: 'Mandarin',   sample: '你好',         speechLang: 'zh-CN', rtl: false, cjk: true  },
+  { code: 'ko', name: 'Korean',     sample: '안녕하세요',   speechLang: 'ko-KR', rtl: false, cjk: true  },
+  { code: 'fa', name: 'Farsi',      sample: 'سلام',        speechLang: 'fa-IR', rtl: true,  cjk: false },
+  { code: 'hi', name: 'Hindi',      sample: 'नमस्ते',      speechLang: 'hi-IN', rtl: false, cjk: false },
+  { code: 'tr', name: 'Turkish',    sample: 'merhaba',     speechLang: 'tr-TR', rtl: false, cjk: false },
+  { code: 'uk', name: 'Ukrainian',  sample: 'привіт',      speechLang: 'uk-UA', rtl: false, cjk: false },
+];
+
 let allCards = [], queue = [], incorrectIndices = [];
 let idx = 0, flipped = false, answered = false, round = 1, roundCorrect = 0;
 let hasCategories = false, hasTranslit = false;
 let currentUser = null;
-let reviewSet = new Set(); // card_key strings from DB
+let reviewSet = new Set();
 let isSignUp = false;
+let currentLang = null;      // language object for current cards
+let pendingFile = null;       // file being uploaded, waiting for lang pick
+let pendingCards = [];        // parsed cards waiting for lang pick
+let pendingFilename = '';
 
 // ── Init ──
 async function init() {
+  buildLangGrid();
   const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await afterLogin();
-  } else {
-    show('auth-section');
-  }
+  if (session) { currentUser = session.user; await afterLogin(); }
+  else show('auth-section');
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) {
-      currentUser = session.user;
-      await afterLogin();
-    } else if (event === 'SIGNED_OUT') {
-      currentUser = null;
-      allCards = [];
-      reviewSet = new Set();
-      show('auth-section');
-    }
+    if (event === 'SIGNED_IN' && session) { currentUser = session.user; await afterLogin(); }
+    else if (event === 'SIGNED_OUT') { currentUser = null; allCards = []; reviewSet = new Set(); show('auth-section'); }
   });
 }
 
 function show(id) {
   ['loading-section','auth-section','home-section','setup-section','study-section','summary-section']
     .forEach(s => document.getElementById(s).style.display = s === id ? '' : 'none');
+  document.getElementById('lang-modal').style.display = 'none';
 }
 
 // ── Auth ──
@@ -385,20 +400,15 @@ async function submitAuth() {
   const btn = document.getElementById('auth-btn');
   const errEl = document.getElementById('auth-error');
   if (!email || !password) { errEl.textContent = 'Please enter email and password.'; return; }
-  btn.disabled = true;
-  btn.textContent = isSignUp ? 'Creating account...' : 'Signing in...';
-  errEl.textContent = '';
+  btn.disabled = true; btn.textContent = isSignUp ? 'Creating account...' : 'Signing in...'; errEl.textContent = '';
   const fn = isSignUp ? sb.auth.signUp.bind(sb.auth) : sb.auth.signInWithPassword.bind(sb.auth);
   const { error } = await fn({ email, password });
-  btn.disabled = false;
-  btn.textContent = isSignUp ? 'Sign up' : 'Sign in';
+  btn.disabled = false; btn.textContent = isSignUp ? 'Sign up' : 'Sign in';
   if (error) { errEl.textContent = error.message; return; }
-  if (isSignUp) errEl.style.color = 'var(--green)', errEl.textContent = 'Check your email to confirm your account!';
+  if (isSignUp) { errEl.style.color = 'var(--green)'; errEl.textContent = 'Check your email to confirm your account!'; }
 }
 
-async function signOut() {
-  await sb.auth.signOut();
-}
+async function signOut() { await sb.auth.signOut(); }
 
 // ── After login ──
 async function afterLogin() {
@@ -408,7 +418,7 @@ async function afterLogin() {
   await loadSavedCards();
 }
 
-// ── Review list (Supabase) ──
+// ── Review list ──
 async function loadReviewSet() {
   const { data } = await sb.from('want_to_review').select('card_key').eq('user_id', currentUser.id);
   reviewSet = new Set((data || []).map(r => r.card_key));
@@ -435,14 +445,15 @@ function updateReviewBtn() {
   document.getElementById('review-btn-label').textContent = marked ? 'want to review ✓' : 'want to review';
 }
 
-function cardKey(c) { return c.english + '|||' + c.hebrew; }
+function cardKey(c) { return c.english + '|||' + c.target; }
 
-// ── Saved cards (Supabase) ──
+// ── Saved cards ──
 async function loadSavedCards() {
   show('loading-section');
-  const { data } = await sb.from('user_cards').select('cards_json, filename, uploaded_at').eq('user_id', currentUser.id).single();
+  const { data } = await sb.from('user_cards').select('cards_json, filename, uploaded_at, lang_code').eq('user_id', currentUser.id).single();
   if (data && data.cards_json) {
     allCards = data.cards_json;
+    currentLang = LANGUAGES.find(l => l.code === data.lang_code) || LANGUAGES[0];
     detectColumns();
     showHome(data.filename, data.uploaded_at);
   } else {
@@ -455,6 +466,7 @@ async function saveCards(filename) {
     user_id: currentUser.id,
     cards_json: allCards,
     filename: filename,
+    lang_code: currentLang.code,
     uploaded_at: new Date().toISOString()
   }, { onConflict: 'user_id' });
 }
@@ -462,9 +474,10 @@ async function saveCards(filename) {
 // ── Home ──
 function showHome(filename, uploadedAt) {
   show('home-section');
-  if (allCards.length > 0 && filename) {
+  if (allCards.length > 0 && filename && currentLang) {
     document.getElementById('existing-card').style.display = '';
     document.getElementById('existing-info').textContent = filename + ' — ' + allCards.length + ' words';
+    document.getElementById('existing-lang-badge').textContent = currentLang.name;
     const d = uploadedAt ? new Date(uploadedAt).toLocaleDateString() : '';
     document.getElementById('existing-sub').textContent = d ? 'Uploaded ' + d : '';
     document.getElementById('upload-label').textContent = 'Upload a different file';
@@ -473,45 +486,84 @@ function showHome(filename, uploadedAt) {
   }
 }
 
-function replaceCards() {
-  document.getElementById('file-input').click();
+// ── Language picker ──
+function buildLangGrid() {
+  const grid = document.getElementById('lang-grid');
+  LANGUAGES.forEach(lang => {
+    const el = document.createElement('div');
+    el.className = 'lang-option';
+    el.dataset.code = lang.code;
+    el.innerHTML = `<div class="lang-name">${lang.name}</div><div class="lang-sample">${lang.sample}</div>`;
+    el.onclick = () => {
+      document.querySelectorAll('.lang-option').forEach(x => x.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('lang-confirm-btn').disabled = false;
+    };
+    grid.appendChild(el);
+  });
+}
+
+function showLangModal() {
+  document.getElementById('lang-modal').style.display = 'flex';
+  document.querySelectorAll('.lang-option').forEach(x => x.classList.remove('selected'));
+  document.getElementById('lang-confirm-btn').disabled = true;
+}
+
+function handleModalClick(e) {
+  if (e.target === document.getElementById('lang-modal')) hideLangModal();
+}
+
+function hideLangModal() {
+  document.getElementById('lang-modal').style.display = 'none';
+  pendingCards = []; pendingFilename = '';
+}
+
+async function confirmLanguage() {
+  const selected = document.querySelector('.lang-option.selected');
+  if (!selected) return;
+  currentLang = LANGUAGES.find(l => l.code === selected.dataset.code);
+  document.getElementById('lang-modal').style.display = 'none';
+  allCards = pendingCards;
+  detectColumns();
+  show('loading-section');
+  await saveCards(pendingFilename);
+  showHome(pendingFilename, new Date().toISOString());
 }
 
 // ── Load Excel ──
 async function loadFile(e) {
   const file = e.target.files[0];
   if (!file) return;
-  show('loading-section');
   const reader = new FileReader();
-  reader.onload = async function(ev) {
+  reader.onload = function(ev) {
     try {
       const wb = XLSX.read(new Uint8Array(ev.target.result), { type: 'array' });
       const ws = wb.Sheets[wb.SheetNames[0]];
       const rows = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      allCards = [];
       const header = rows[0] || [];
       const h2 = (header[2] || '').toString().trim().toLowerCase();
       const h3 = (header[3] || '').toString().trim().toLowerCase();
       hasTranslit = h2.includes('translit') || h2.includes('romaniz') || h2.includes('pronun');
       hasCategories = h3.includes('cat') || h3.includes('group') || h3.includes('topic') || h3.includes('type');
-      const dataStart = (header[0] || '').toString().trim().toLowerCase() === 'english' || h2 || h3 ? 1 : 0;
+      const dataStart = (header[0] || '').toString().trim() ? 1 : 0;
+      pendingCards = [];
       for (let i = dataStart; i < rows.length; i++) {
         const row = rows[i];
         const eng = (row[0] || '').toString().trim();
-        const heb = (row[1] || '').toString().trim();
-        if (!eng || !heb) continue;
-        allCards.push({ english: eng, hebrew: heb, translit: hasTranslit ? (row[2]||'').toString().trim() : '', category: hasCategories ? (row[3]||'').toString().trim() : '' });
+        const tgt = (row[1] || '').toString().trim();
+        if (!eng || !tgt) continue;
+        pendingCards.push({ english: eng, target: tgt, translit: hasTranslit ? (row[2]||'').toString().trim() : '', category: hasCategories ? (row[3]||'').toString().trim() : '' });
       }
-      if (!allCards.length) { alert('No cards found.'); showHome(); return; }
-      await saveCards(file.name);
-      showHome(file.name, new Date().toISOString());
-    } catch(err) { alert('Could not read file.'); showHome(); }
+      if (!pendingCards.length) { alert('No cards found.'); return; }
+      pendingFilename = file.name;
+      showLangModal();
+    } catch { alert('Could not read file.'); }
   };
   reader.readAsArrayBuffer(file);
+  e.target.value = '';
 }
 
 function detectColumns() {
-  if (!allCards.length) return;
   hasTranslit = allCards.some(c => c.translit);
   hasCategories = allCards.some(c => c.category);
 }
@@ -519,19 +571,17 @@ function detectColumns() {
 // ── Setup ──
 function goSetup() {
   show('setup-section');
-  document.getElementById('setup-count-line').textContent = allCards.length + ' words in your list';
+  document.getElementById('setup-count-line').textContent = allCards.length + ' words';
+  document.getElementById('setup-lang-badge').textContent = currentLang ? currentLang.name : '';
   const chips = document.getElementById('category-chips');
   chips.innerHTML = '';
   const catField = document.getElementById('cat-field');
   const hasReview = allCards.some(c => reviewSet.has(cardKey(c)));
-
   if (hasCategories || hasReview) {
     catField.style.display = '';
     if (hasReview) chips.appendChild(makeChip('Want to Review', '__review__', false));
     chips.appendChild(makeChip('All', '__all__', true));
-    if (hasCategories) {
-      [...new Set(allCards.map(c => c.category).filter(Boolean))].forEach(cat => chips.appendChild(makeChip(cat, cat, false)));
-    }
+    if (hasCategories) [...new Set(allCards.map(c => c.category).filter(Boolean))].forEach(cat => chips.appendChild(makeChip(cat, cat, false)));
   } else {
     catField.style.display = 'none';
   }
@@ -543,8 +593,7 @@ function goSetup() {
 function makeChip(label, val, active) {
   const c = document.createElement('div');
   c.className = 'chip' + (val === '__review__' ? ' review-chip' : '') + (active ? ' active' : '');
-  c.textContent = label;
-  c.dataset.cat = val;
+  c.textContent = label; c.dataset.cat = val;
   c.onclick = () => {
     if (val === '__all__') {
       document.querySelectorAll('#category-chips .chip').forEach(x => x.classList.remove('active'));
@@ -570,9 +619,8 @@ function getCandidates() {
   const sel = getSelectedCats();
   const order = document.getElementById('order-select').value;
   let cards;
-  if (sel === '__all__') {
-    cards = [...allCards];
-  } else {
+  if (sel === '__all__') { cards = [...allCards]; }
+  else {
     const wantReview = sel.includes('__review__');
     const cats = sel.filter(s => s !== '__review__');
     cards = allCards.filter(c => (wantReview && reviewSet.has(cardKey(c))) || (cats.length && cats.includes(c.category)));
@@ -586,14 +634,8 @@ function updateCountPreview() {
   const n = parseInt(document.getElementById('n-input').value) || 0;
   const actual = Math.min(n, cands.length);
   const btn = document.getElementById('start-btn');
-  if (!cands.length) {
-    document.getElementById('count-preview').textContent = 'No cards in this selection.';
-    btn.disabled = true;
-  } else {
-    document.getElementById('count-preview').textContent = actual + ' of ' + cands.length + ' available';
-    document.getElementById('n-input').max = cands.length;
-    btn.disabled = false;
-  }
+  if (!cands.length) { document.getElementById('count-preview').textContent = 'No cards in this selection.'; btn.disabled = true; }
+  else { document.getElementById('count-preview').textContent = actual + ' of ' + cands.length + ' available'; document.getElementById('n-input').max = cands.length; btn.disabled = false; }
 }
 
 // ── Session ──
@@ -608,8 +650,7 @@ function startSession() {
   const n = Math.min(parseInt(document.getElementById('n-input').value) || cands.length, cands.length);
   const order = document.getElementById('order-select').value;
   const picked = order === 'random' ? shuffle(cands).slice(0, n) : cands.slice(0, n);
-  round = 1;
-  beginRound(picked);
+  round = 1; beginRound(picked);
 }
 
 function beginRound(cards) {
@@ -619,22 +660,21 @@ function beginRound(cards) {
   document.getElementById('round-badge').textContent = 'Round ' + round;
   const sel = getSelectedCats();
   const catBadge = document.getElementById('cat-badge');
-  if (sel !== '__all__') {
-    catBadge.textContent = sel.map(s => s === '__review__' ? 'Want to Review' : s).join(', ');
-    catBadge.style.display = '';
-  } else { catBadge.style.display = 'none'; }
+  if (sel !== '__all__') { catBadge.textContent = sel.map(s => s === '__review__' ? 'Want to Review' : s).join(', '); catBadge.style.display = ''; }
+  else catBadge.style.display = 'none';
   updateStats(); showCard();
 }
 
 function showCard() {
   const c = queue[idx];
   flipped = false; answered = false;
+  const langName = currentLang ? currentLang.name.toLowerCase() : 'target';
   document.getElementById('side-label').textContent = 'english';
   document.getElementById('front-text').textContent = c.english;
   document.getElementById('front-text').style.display = '';
-  ['back-hebrew','back-translit','back-english','audio-chip','answer-row'].forEach(id => document.getElementById(id).style.display = 'none');
+  ['back-target','back-translit','back-english','audio-chip','answer-row'].forEach(id => document.getElementById(id).style.display = 'none');
   document.getElementById('card').className = 'card';
-  document.getElementById('audio-status').textContent = 'read hebrew';
+  document.getElementById('audio-status').textContent = 'hear it';
   document.getElementById('audio-status').classList.remove('speaking');
   const catEl = document.getElementById('card-cat');
   if (hasCategories && c.category) { catEl.textContent = c.category; catEl.style.display = ''; } else catEl.style.display = 'none';
@@ -648,10 +688,13 @@ function flipCard() {
   const c = queue[idx];
   flipped = true;
   document.getElementById('card').className = 'card flipped';
-  document.getElementById('side-label').textContent = 'hebrew';
+  const langName = currentLang ? currentLang.name.toLowerCase() : 'target language';
+  document.getElementById('side-label').textContent = langName;
   document.getElementById('front-text').style.display = 'none';
-  document.getElementById('back-hebrew').textContent = c.hebrew;
-  document.getElementById('back-hebrew').style.display = '';
+  const targetEl = document.getElementById('back-target');
+  targetEl.textContent = c.target;
+  targetEl.className = 'card-target' + (currentLang?.rtl ? ' rtl' : '') + (currentLang?.cjk ? ' cjk' : '');
+  targetEl.style.display = '';
   if (c.translit) { document.getElementById('back-translit').textContent = c.translit; document.getElementById('back-translit').style.display = ''; }
   document.getElementById('back-english').textContent = c.english;
   document.getElementById('back-english').style.display = '';
@@ -699,27 +742,29 @@ function startReview() { round++; beginRound(shuffle(window._missed)); }
 function restartSame() { round = 1; beginRound(shuffle(queue)); }
 
 // ── Audio ──
-function speakHebrew() {
-  if (!flipped || !queue[idx]) return;
+function speakTarget() {
+  if (!flipped || !queue[idx] || !currentLang) return;
   if (!window.speechSynthesis) { alert('Your browser does not support text-to-speech.'); return; }
   window.speechSynthesis.cancel();
-  const utt = new SpeechSynthesisUtterance(queue[idx].hebrew);
-  utt.lang = 'he-IL';
-  const heVoice = window.speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('he'));
-  if (heVoice) utt.voice = heVoice;
+  const utt = new SpeechSynthesisUtterance(queue[idx].target);
+  utt.lang = currentLang.speechLang;
+  const voices = window.speechSynthesis.getVoices();
+  const match = voices.find(v => v.lang === currentLang.speechLang) || voices.find(v => v.lang.startsWith(currentLang.code));
+  if (match) utt.voice = match;
   const s = document.getElementById('audio-status');
   utt.onstart = () => { s.textContent = 'playing...'; s.classList.add('speaking'); };
-  utt.onend = () => { s.textContent = 'read hebrew'; s.classList.remove('speaking'); };
+  utt.onend = () => { s.textContent = 'hear it'; s.classList.remove('speaking'); };
   window.speechSynthesis.speak(utt);
 }
 
 // ── Keys ──
 document.addEventListener('keydown', function(e) {
   if (['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if (document.getElementById('lang-modal').style.display !== 'none') return;
   if (e.code === 'Space') { e.preventDefault(); flipCard(); }
   else if (e.code === 'ArrowUp') { e.preventDefault(); markAnswer(true); }
   else if (e.code === 'ArrowDown') { e.preventDefault(); markAnswer(false); }
-  else if (e.key === 'a' || e.key === 'A') speakHebrew();
+  else if (e.key === 'a' || e.key === 'A') speakTarget();
   else if (e.key === 's' || e.key === 'S') { if (queue[idx]) toggleReview({ stopPropagation: ()=>{} }); }
 });
 
