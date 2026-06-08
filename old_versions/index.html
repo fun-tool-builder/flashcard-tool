@@ -38,13 +38,12 @@
   body { font-family: -apple-system,'Helvetica Neue',sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
   .app { width: 100%; max-width: 600px; }
 
-  /* ── Auth ── */
   .auth-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2rem; }
   .auth-title { font-size: 20px; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
   .auth-sub { font-size: 13px; color: var(--text3); margin-bottom: 1.5rem; }
   .field { margin-bottom: 1rem; }
   .field label { display: block; font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.35rem; }
-  .field input[type=email], .field input[type=text], .field input[type=password], .field input[type=number], .field select {
+  .field input[type=email], .field input[type=password], .field input[type=number], .field select {
     width: 100%; padding: 0.6rem 0.75rem; border-radius: var(--radius-sm);
     border: 0.5px solid var(--border-strong); background: var(--surface2);
     color: var(--text); font-size: 14px; appearance: none; -webkit-appearance: none;
@@ -53,23 +52,15 @@
   .primary-btn { width: 100%; padding: 0.75rem; border-radius: var(--radius-sm); border: none; background: var(--text); color: var(--bg); font-size: 15px; font-weight: 500; cursor: pointer; transition: opacity 0.12s; margin-top: 0.25rem; }
   .primary-btn:hover { opacity: 0.8; }
   .primary-btn:disabled { opacity: 0.4; cursor: default; }
-  .secondary-btn { width: 100%; padding: 0.7rem; border-radius: var(--radius-sm); border: 0.5px solid var(--border-strong); background: var(--surface2); color: var(--text); font-size: 14px; font-weight: 500; cursor: pointer; transition: opacity 0.12s; margin-top: 0.5rem; }
-  .secondary-btn:hover { opacity: 0.75; }
   .auth-switch { text-align: center; margin-top: 1rem; font-size: 13px; color: var(--text3); }
   .auth-switch a { color: var(--blue); cursor: pointer; text-decoration: underline; }
   .error-msg { font-size: 13px; color: var(--red); margin-top: 0.5rem; text-align: center; min-height: 1.2em; }
-  .divider { display: flex; align-items: center; gap: 10px; margin: 1rem 0; }
-  .divider span { font-size: 12px; color: var(--text3); white-space: nowrap; }
-  .divider::before, .divider::after { content: ''; flex: 1; height: 0.5px; background: var(--border-strong); }
 
-  /* ── Top bar ── */
   .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
   .user-badge { font-size: 12px; color: var(--text3); background: var(--surface2); padding: 3px 10px; border-radius: 20px; }
   .signout-btn { font-size: 12px; color: var(--text3); background: none; border: none; cursor: pointer; text-decoration: underline; }
   .lang-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--blue-bg); color: var(--blue); }
-  .guest-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--amber-bg); color: var(--amber); }
 
-  /* ── Upload ── */
   .upload-zone { background: var(--surface); border: 1.5px dashed var(--border-strong); border-radius: var(--radius); padding: 2rem; text-align: center; cursor: pointer; transition: border-color 0.15s; }
   .upload-zone:hover { border-color: var(--text2); }
   .upload-zone input { display: none; }
@@ -80,9 +71,9 @@
   .existing-info { font-size: 14px; color: var(--text); }
   .existing-sub { font-size: 12px; color: var(--text3); margin-top: 3px; display: flex; align-items: center; gap: 6px; }
 
-  /* ── Language modal ── */
+  /* Language picker modal */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 1rem; }
-  .modal { background: var(--surface); border-radius: var(--radius); padding: 1.75rem; width: 100%; max-width: 420px; max-height: 90vh; overflow-y: auto; }
+  .modal { background: var(--surface); border-radius: var(--radius); padding: 1.75rem; width: 100%; max-width: 420px; }
   .modal-title { font-size: 17px; font-weight: 500; color: var(--text); margin-bottom: 0.35rem; }
   .modal-sub { font-size: 13px; color: var(--text3); margin-bottom: 1.25rem; }
   .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
@@ -91,9 +82,11 @@
   .lang-option.selected { background: var(--text); color: var(--bg); border-color: var(--text); }
   .lang-name { font-size: 14px; font-weight: 500; color: inherit; }
   .lang-sample { font-size: 13px; color: var(--text3); margin-top: 2px; }
-  .lang-option.selected .lang-sample { color: rgba(255,255,255,0.55); }
+  .lang-option.selected .lang-sample { color: rgba(255,255,255,0.6); }
+  @media (prefers-color-scheme: dark) {
+    .lang-option.selected .lang-sample { color: rgba(0,0,0,0.5); }
+  }
 
-  /* ── Setup ── */
   .setup-card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 1.75rem; }
   .setup-title { font-size: 16px; font-weight: 500; color: var(--text); margin-bottom: 0.25rem; }
   .category-chips { display: flex; flex-wrap: wrap; gap: 7px; }
@@ -105,7 +98,6 @@
   .start-btn:hover { opacity: 0.8; }
   .start-btn:disabled { opacity: 0.35; cursor: default; }
 
-  /* ── Study ── */
   .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
   .header-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .round-badge { font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 500; background: var(--amber-bg); color: var(--amber); }
@@ -114,6 +106,7 @@
   .progress-track { flex: 1; height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; background: var(--text); border-radius: 2px; transition: width 0.3s; }
   .progress-label { font-size: 12px; color: var(--text3); white-space: nowrap; }
+
   .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem 2rem; min-height: 210px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; cursor: pointer; position: relative; transition: border-color 0.15s; }
   .card:hover { border-color: var(--border-strong); }
   .card.flipped { border-color: var(--border-strong); }
@@ -145,19 +138,14 @@
   .key-hints { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
   .key-hint { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); }
 
-  /* ── Summary ── */
   .summary { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 2.5rem 2rem; text-align: center; }
   .summary-icon { font-size: 44px; margin-bottom: 0.9rem; }
   .summary-title { font-size: 20px; font-weight: 500; color: var(--text); margin-bottom: 0.4rem; }
   .summary-sub { font-size: 14px; color: var(--text2); margin-bottom: 1.75rem; line-height: 1.7; }
   .summary-actions { display: flex; flex-direction: column; gap: 9px; }
-  .save-prompt { background: var(--amber-bg); border: 0.5px solid var(--amber); border-radius: var(--radius-sm); padding: 1rem 1.25rem; margin-bottom: 1rem; text-align: left; }
-  .save-prompt-title { font-size: 14px; font-weight: 500; color: var(--amber); margin-bottom: 0.25rem; }
-  .save-prompt-sub { font-size: 12px; color: var(--amber); opacity: 0.85; }
   .btn { padding: 0.7rem 1.25rem; border-radius: var(--radius-sm); border: 0.5px solid var(--border-strong); font-size: 14px; font-weight: 500; cursor: pointer; background: var(--surface2); color: var(--text); transition: opacity 0.12s; }
   .btn:hover { opacity: 0.75; }
   .btn.primary { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .btn.amber { background: var(--amber-bg); color: var(--amber); border-color: var(--amber); }
   .reload-link { display: block; text-align: center; margin-top: 1.1rem; font-size: 12px; color: var(--text3); cursor: pointer; text-decoration: underline; background: none; border: none; }
   .speaking { color: var(--blue) !important; }
   .loading { text-align: center; padding: 3rem; color: var(--text3); font-size: 14px; }
@@ -170,75 +158,36 @@
 
   <div id="loading-section" class="loading"><span class="spinner"></span> Loading...</div>
 
-  <!-- ── Landing / Auth ── -->
+  <!-- Auth -->
   <div id="auth-section" style="display:none">
     <div style="text-align:center;margin-bottom:1.5rem">
-      <div style="font-size:24px;font-weight:500;color:var(--text);margin-bottom:0.3rem">Read &amp; Repeat</div>
+      <div style="font-size:22px;font-weight:500;color:var(--text);margin-bottom:0.25rem">Read & Repeat</div>
       <div style="font-size:13px;color:var(--text3)">Study any language with your own word lists</div>
     </div>
-
-    <!-- Try without account -->
-    <div style="background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;text-align:center">
-      <div style="font-size:15px;font-weight:500;color:var(--text);margin-bottom:0.35rem">Try it out</div>
-      <div style="font-size:13px;color:var(--text3);margin-bottom:1rem">No account needed — upload a file and start studying</div>
-      <button class="primary-btn" style="margin-top:0" onclick="startGuest()">Continue as guest →</button>
-      <div style="margin-top:0.75rem">
-        <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)"><i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file</a>
-      </div>
-    </div>
-
-    <div class="divider"><span>or create a free account to save your progress</span></div>
-
     <div class="auth-card">
       <div class="auth-title" id="auth-title">Sign in</div>
       <div class="auth-sub" id="auth-sub">Welcome back</div>
-      <div class="field"><label>Email or username</label><input type="text" id="auth-identifier" placeholder="you@example.com or username" autocomplete="username"></div>
-      <div class="field" id="email-field" style="display:none"><label>Email</label><input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email"></div>
+      <div class="field"><label>Email</label><input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email"></div>
       <div class="field"><label>Password</label><input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password"></div>
       <div class="error-msg" id="auth-error"></div>
       <button class="primary-btn" id="auth-btn" onclick="submitAuth()">Sign in</button>
       <div class="auth-switch" id="auth-switch">No account? <a onclick="toggleAuthMode()">Sign up free</a></div>
     </div>
-  </div>
-
-  <!-- ── Guest upload ── -->
-  <div id="guest-section" style="display:none">
-    <div class="topbar">
-      <div style="font-size:16px;font-weight:500;color:var(--text)">Read &amp; Repeat</div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="guest-badge">Guest</span>
-        <button class="signout-btn" onclick="show('auth-section')">sign in</button>
-      </div>
-    </div>
-    <div class="upload-zone" onclick="document.getElementById('file-input-guest').click()">
-      <div style="font-size:30px;color:var(--text3);margin-bottom:0.5rem"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i></div>
-      <div style="font-size:15px;color:var(--text2);margin-bottom:0.3rem">Upload your Excel file</div>
-      <div style="font-size:12px;color:var(--text3)">.xlsx or .xls</div>
-      <input type="file" id="file-input-guest" accept=".xlsx,.xls,.csv" onchange="loadFile(event)">
-    </div>
-    <div class="format-box">
-      <p>
-        <code>Col A</code> English &nbsp;·&nbsp;
-        <code>Col B</code> Target language &nbsp;·&nbsp;
-        <code>Col C</code> Transliteration (optional) &nbsp;·&nbsp;
-        <code>Col D</code> Category (optional)<br>
-        Header row detected automatically. Newer words go at the bottom.
-      </p>
-    </div>
-    <div style="text-align:center;margin-top:0.75rem">
-      <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)"><i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file</a>
+    <div style="text-align:center;margin-top:1.25rem">
+      <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)"><i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file (Hebrew)</a>
     </div>
   </div>
 
-  <!-- ── Logged-in home ── -->
+  <!-- Home -->
   <div id="home-section" style="display:none">
     <div class="topbar">
-      <div style="font-size:16px;font-weight:500;color:var(--text)">Read &amp; Repeat</div>
+      <div style="font-size:16px;font-weight:500;color:var(--text)">Read & Repeat</div>
       <div style="display:flex;align-items:center;gap:10px">
         <span class="user-badge" id="user-email-badge"></span>
         <button class="signout-btn" onclick="signOut()">sign out</button>
       </div>
     </div>
+
     <div id="existing-card" style="display:none" class="existing-cards">
       <div>
         <div class="existing-info" id="existing-info"></div>
@@ -249,6 +198,7 @@
       </div>
       <button class="primary-btn" style="width:auto;padding:0.5rem 1.25rem;font-size:13px;white-space:nowrap" onclick="goSetup()">Study →</button>
     </div>
+
     <div id="upload-area">
       <div class="upload-zone" onclick="document.getElementById('file-input').click()">
         <div style="font-size:30px;color:var(--text3);margin-bottom:0.5rem"><i class="ti ti-file-spreadsheet" aria-hidden="true"></i></div>
@@ -265,26 +215,29 @@
           Header row detected automatically. Newer words go at the bottom.
         </p>
       </div>
+      <div style="text-align:center;margin-top:0.75rem">
+        <a href="demo.xlsx" download style="font-size:12px;color:var(--text3)"><i class="ti ti-download" aria-hidden="true"></i> Download demo Excel file</a>
+      </div>
     </div>
   </div>
 
-  <!-- ── Language modal ── -->
+  <!-- Language picker modal -->
   <div class="modal-overlay" id="lang-modal" style="display:none" onclick="handleModalClick(event)">
     <div class="modal">
       <div class="modal-title">Choose your target language</div>
-      <div class="modal-sub">Sets text direction and audio pronunciation.</div>
+      <div class="modal-sub">This sets the text direction and audio pronunciation.</div>
       <div class="lang-grid" id="lang-grid"></div>
       <button class="primary-btn" id="lang-confirm-btn" onclick="confirmLanguage()" disabled>Continue →</button>
     </div>
   </div>
 
-  <!-- ── Setup ── -->
+  <!-- Setup -->
   <div id="setup-section" style="display:none">
     <div class="topbar">
-      <div style="font-size:15px;font-weight:500;color:var(--text)">Read &amp; Repeat</div>
+      <div style="font-size:15px;font-weight:500;color:var(--text)">Read & Repeat</div>
       <div style="display:flex;align-items:center;gap:10px">
-        <span id="setup-user-badge"></span>
-        <button class="signout-btn" id="setup-signout-btn"></button>
+        <span class="user-badge" id="user-email-badge2"></span>
+        <button class="signout-btn" onclick="signOut()">sign out</button>
       </div>
     </div>
     <div class="setup-card">
@@ -313,16 +266,16 @@
       <button class="start-btn" id="start-btn" onclick="startSession()">Start →</button>
     </div>
     <div style="display:flex;justify-content:space-between;margin-top:0.9rem">
-      <button class="reload-link" onclick="goHome()">← back</button>
-      <button class="reload-link" id="setup-upload-btn">upload new file</button>
+      <button class="reload-link" onclick="showHome()">← back</button>
+      <button class="reload-link" onclick="document.getElementById('file-input').click()">upload new file</button>
     </div>
   </div>
 
-  <!-- ── Study ── -->
+  <!-- Study -->
   <div id="study-section" style="display:none">
     <div class="header">
       <div class="header-left">
-        <span style="font-size:15px;font-weight:500;color:var(--text)">Read &amp; Repeat</span>
+        <span style="font-size:15px;font-weight:500;color:var(--text)">Read & Repeat</span>
         <span class="round-badge" id="round-badge">Round 1</span>
         <span class="cat-badge" id="cat-badge" style="display:none"></span>
       </div>
@@ -365,22 +318,18 @@
     </div>
   </div>
 
-  <!-- ── Summary ── -->
+  <!-- Summary -->
   <div id="summary-section" style="display:none">
     <div class="summary">
       <div class="summary-icon" id="summary-icon">🎉</div>
       <div class="summary-title" id="summary-title"></div>
       <div class="summary-sub" id="summary-sub"></div>
-      <div id="guest-save-prompt" style="display:none" class="save-prompt">
-        <div class="save-prompt-title">Want to save your progress?</div>
-        <div class="save-prompt-sub">Create a free account to save your word list and "Want to Review" list across sessions.</div>
-      </div>
       <div class="summary-actions" id="summary-actions"></div>
     </div>
-    <button class="reload-link" onclick="goHome()">← home</button>
+    <button class="reload-link" onclick="showHome()">← home</button>
   </div>
 
-  <!-- ── Ko-fi ── -->
+  <!-- Ko-fi -->
   <div style="text-align:center;margin-top:2rem;padding-top:1.25rem;border-top:0.5px solid var(--border)">
     <a href="https://ko-fi.com/funprojectsbrigade" target="_blank" rel="noopener"
        style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--text3);text-decoration:none;padding:7px 16px;border-radius:20px;border:0.5px solid var(--border-strong);background:var(--surface);transition:opacity 0.12s"
@@ -389,7 +338,7 @@
     </a>
   </div>
 
-</div><!-- end .app -->
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -398,77 +347,61 @@ const SUPABASE_URL = 'https://zlrqzrahkrcoztockexy.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Cu5128PS0X33PzTCnSQVLg_K5Ec0CaM';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+// ── Language definitions ──
 const LANGUAGES = [
-  { code: 'he', name: 'Hebrew',     sample: 'שָׁלוֹם',   speechLang: 'he-IL', rtl: true,  cjk: false },
-  { code: 'ar', name: 'Arabic',     sample: 'مرحبا',     speechLang: 'ar-SA', rtl: true,  cjk: false },
-  { code: 'el', name: 'Greek',      sample: 'γεια σας',  speechLang: 'el-GR', rtl: false, cjk: false },
-  { code: 'ru', name: 'Russian',    sample: 'привет',    speechLang: 'ru-RU', rtl: false, cjk: false },
-  { code: 'es', name: 'Spanish',    sample: 'hola',      speechLang: 'es-ES', rtl: false, cjk: false },
-  { code: 'fr', name: 'French',     sample: 'bonjour',   speechLang: 'fr-FR', rtl: false, cjk: false },
-  { code: 'de', name: 'German',     sample: 'Guten Tag', speechLang: 'de-DE', rtl: false, cjk: false },
-  { code: 'it', name: 'Italian',    sample: 'ciao',      speechLang: 'it-IT', rtl: false, cjk: false },
-  { code: 'pt', name: 'Portuguese', sample: 'olá',       speechLang: 'pt-PT', rtl: false, cjk: false },
-  { code: 'ja', name: 'Japanese',   sample: 'こんにちは', speechLang: 'ja-JP', rtl: false, cjk: true  },
-  { code: 'zh', name: 'Mandarin',   sample: '你好',       speechLang: 'zh-CN', rtl: false, cjk: true  },
-  { code: 'ko', name: 'Korean',     sample: '안녕하세요', speechLang: 'ko-KR', rtl: false, cjk: true  },
-  { code: 'fa', name: 'Farsi',      sample: 'سلام',      speechLang: 'fa-IR', rtl: true,  cjk: false },
-  { code: 'hi', name: 'Hindi',      sample: 'नमस्ते',    speechLang: 'hi-IN', rtl: false, cjk: false },
-  { code: 'tr', name: 'Turkish',    sample: 'merhaba',   speechLang: 'tr-TR', rtl: false, cjk: false },
-  { code: 'uk', name: 'Ukrainian',  sample: 'привіт',    speechLang: 'uk-UA', rtl: false, cjk: false },
+  { code: 'he', name: 'Hebrew',     sample: 'שָׁלוֹם',     speechLang: 'he-IL', rtl: true,  cjk: false },
+  { code: 'ar', name: 'Arabic',     sample: 'مرحبا',       speechLang: 'ar-SA', rtl: true,  cjk: false },
+  { code: 'el', name: 'Greek',      sample: 'γεια σας',    speechLang: 'el-GR', rtl: false, cjk: false },
+  { code: 'ru', name: 'Russian',    sample: 'привет',      speechLang: 'ru-RU', rtl: false, cjk: false },
+  { code: 'es', name: 'Spanish',    sample: 'hola',        speechLang: 'es-ES', rtl: false, cjk: false },
+  { code: 'fr', name: 'French',     sample: 'bonjour',     speechLang: 'fr-FR', rtl: false, cjk: false },
+  { code: 'de', name: 'German',     sample: 'Guten Tag',   speechLang: 'de-DE', rtl: false, cjk: false },
+  { code: 'it', name: 'Italian',    sample: 'ciao',        speechLang: 'it-IT', rtl: false, cjk: false },
+  { code: 'pt', name: 'Portuguese', sample: 'olá',         speechLang: 'pt-PT', rtl: false, cjk: false },
+  { code: 'ja', name: 'Japanese',   sample: 'こんにちは',   speechLang: 'ja-JP', rtl: false, cjk: true  },
+  { code: 'zh', name: 'Mandarin',   sample: '你好',         speechLang: 'zh-CN', rtl: false, cjk: true  },
+  { code: 'ko', name: 'Korean',     sample: '안녕하세요',   speechLang: 'ko-KR', rtl: false, cjk: true  },
+  { code: 'fa', name: 'Farsi',      sample: 'سلام',        speechLang: 'fa-IR', rtl: true,  cjk: false },
+  { code: 'hi', name: 'Hindi',      sample: 'नमस्ते',      speechLang: 'hi-IN', rtl: false, cjk: false },
+  { code: 'tr', name: 'Turkish',    sample: 'merhaba',     speechLang: 'tr-TR', rtl: false, cjk: false },
+  { code: 'uk', name: 'Ukrainian',  sample: 'привіт',      speechLang: 'uk-UA', rtl: false, cjk: false },
 ];
 
 let allCards = [], queue = [], incorrectIndices = [];
 let idx = 0, flipped = false, answered = false, round = 1, roundCorrect = 0;
 let hasCategories = false, hasTranslit = false;
 let currentUser = null;
-let isGuest = false;
-let reviewSet = new Set();       // DB-backed for logged-in, in-memory for guest
+let reviewSet = new Set();
 let isSignUp = false;
-let currentLang = null;
-let pendingCards = [], pendingFilename = '';
+let currentLang = null;      // language object for current cards
+let pendingFile = null;       // file being uploaded, waiting for lang pick
+let pendingCards = [];        // parsed cards waiting for lang pick
+let pendingFilename = '';
 
 // ── Init ──
 async function init() {
   buildLangGrid();
   const { data: { session } } = await sb.auth.getSession();
-  if (session) { currentUser = session.user; isGuest = false; await afterLogin(); }
+  if (session) { currentUser = session.user; await afterLogin(); }
   else show('auth-section');
   sb.auth.onAuthStateChange(async (event, session) => {
-    if (event === 'SIGNED_IN' && session) { currentUser = session.user; isGuest = false; await afterLogin(); }
+    if (event === 'SIGNED_IN' && session) { currentUser = session.user; await afterLogin(); }
     else if (event === 'SIGNED_OUT') { currentUser = null; allCards = []; reviewSet = new Set(); show('auth-section'); }
   });
 }
 
-const SECTIONS = ['loading-section','auth-section','guest-section','home-section','setup-section','study-section','summary-section'];
 function show(id) {
-  SECTIONS.forEach(s => document.getElementById(s).style.display = s === id ? '' : 'none');
+  ['loading-section','auth-section','home-section','setup-section','study-section','summary-section']
+    .forEach(s => document.getElementById(s).style.display = s === id ? '' : 'none');
   document.getElementById('lang-modal').style.display = 'none';
-}
-
-// ── Guest mode ──
-function startGuest() {
-  isGuest = true;
-  currentUser = null;
-  reviewSet = new Set();
-  allCards = [];
-  currentLang = null;
-  show('guest-section');
-}
-
-function goHome() {
-  if (isGuest) show('guest-section');
-  else showHome();
 }
 
 // ── Auth ──
 function toggleAuthMode() {
   isSignUp = !isSignUp;
   document.getElementById('auth-title').textContent = isSignUp ? 'Create account' : 'Sign in';
-  document.getElementById('auth-sub').textContent = isSignUp ? 'Free — save your word list and progress' : 'Welcome back';
+  document.getElementById('auth-sub').textContent = isSignUp ? 'Free, no credit card needed' : 'Welcome back';
   document.getElementById('auth-btn').textContent = isSignUp ? 'Sign up' : 'Sign in';
-  // show email field separately for signup (so we can have username + email)
-  document.getElementById('email-field').style.display = isSignUp ? '' : 'none';
-  document.getElementById('auth-identifier').placeholder = isSignUp ? 'Choose a username' : 'Email or username';
   document.getElementById('auth-switch').innerHTML = isSignUp
     ? 'Already have an account? <a onclick="toggleAuthMode()">Sign in</a>'
     : 'No account? <a onclick="toggleAuthMode()">Sign up free</a>';
@@ -476,47 +409,31 @@ function toggleAuthMode() {
 }
 
 async function submitAuth() {
-  const identifier = document.getElementById('auth-identifier').value.trim();
+  const email = document.getElementById('auth-email').value.trim();
   const password = document.getElementById('auth-password').value;
-  const errEl = document.getElementById('auth-error');
   const btn = document.getElementById('auth-btn');
-  if (!identifier || !password) { errEl.textContent = 'Please fill in all fields.'; return; }
-
+  const errEl = document.getElementById('auth-error');
+  if (!email || !password) { errEl.textContent = 'Please enter email and password.'; return; }
   btn.disabled = true; btn.textContent = isSignUp ? 'Creating account...' : 'Signing in...'; errEl.textContent = '';
-
-  if (isSignUp) {
-    // username signup: use username@readandrepeat.app as synthetic email
-    const emailInput = document.getElementById('auth-email').value.trim();
-    const isEmail = identifier.includes('@');
-    const email = isEmail ? identifier : (emailInput || identifier + '@readandrepeat.app');
-    const { error } = await sb.auth.signUp({ email, password, options: { data: { username: identifier } } });
-    btn.disabled = false; btn.textContent = 'Sign up';
-    if (error) { errEl.textContent = error.message; return; }
-    errEl.style.color = 'var(--green)';
-    errEl.textContent = identifier.includes('@') ? 'Check your email to confirm your account!' : 'Account created! You can sign in now.';
-  } else {
-    // sign in: try as email first, then as username
-    const isEmail = identifier.includes('@');
-    const email = isEmail ? identifier : identifier + '@readandrepeat.app';
-    const { error } = await sb.auth.signInWithPassword({ email, password });
-    btn.disabled = false; btn.textContent = 'Sign in';
-    if (error) { errEl.textContent = 'Incorrect username/email or password.'; return; }
-  }
+  const fn = isSignUp ? sb.auth.signUp.bind(sb.auth) : sb.auth.signInWithPassword.bind(sb.auth);
+  const { error } = await fn({ email, password });
+  btn.disabled = false; btn.textContent = isSignUp ? 'Sign up' : 'Sign in';
+  if (error) { errEl.textContent = error.message; return; }
+  if (isSignUp) { errEl.style.color = 'var(--green)'; errEl.textContent = 'Check your email to confirm your account!'; }
 }
 
 async function signOut() { await sb.auth.signOut(); }
 
 // ── After login ──
 async function afterLogin() {
-  document.getElementById('user-email-badge').textContent =
-    currentUser.user_metadata?.username || currentUser.email;
+  document.getElementById('user-email-badge').textContent = currentUser.email;
+  document.getElementById('user-email-badge2').textContent = currentUser.email;
   await loadReviewSet();
   await loadSavedCards();
 }
 
 // ── Review list ──
 async function loadReviewSet() {
-  if (isGuest) return;
   const { data } = await sb.from('want_to_review').select('card_key').eq('user_id', currentUser.id);
   reviewSet = new Set((data || []).map(r => r.card_key));
 }
@@ -526,10 +443,10 @@ async function toggleReview(e) {
   const key = cardKey(queue[idx]);
   if (reviewSet.has(key)) {
     reviewSet.delete(key);
-    if (!isGuest) await sb.from('want_to_review').delete().eq('user_id', currentUser.id).eq('card_key', key);
+    await sb.from('want_to_review').delete().eq('user_id', currentUser.id).eq('card_key', key);
   } else {
     reviewSet.add(key);
-    if (!isGuest) await sb.from('want_to_review').insert({ user_id: currentUser.id, card_key: key });
+    await sb.from('want_to_review').insert({ user_id: currentUser.id, card_key: key });
   }
   updateReviewBtn();
 }
@@ -537,7 +454,8 @@ async function toggleReview(e) {
 function updateReviewBtn() {
   if (!queue[idx]) return;
   const marked = reviewSet.has(cardKey(queue[idx]));
-  document.getElementById('review-btn').className = 'review-btn' + (marked ? ' marked' : '');
+  const btn = document.getElementById('review-btn');
+  btn.className = 'review-btn' + (marked ? ' marked' : '');
   document.getElementById('review-btn-label').textContent = marked ? 'want to review ✓' : 'want to review';
 }
 
@@ -546,7 +464,7 @@ function cardKey(c) { return c.english + '|||' + c.target; }
 // ── Saved cards ──
 async function loadSavedCards() {
   show('loading-section');
-  const { data } = await sb.from('user_cards').select('cards_json,filename,uploaded_at,lang_code').eq('user_id', currentUser.id).single();
+  const { data } = await sb.from('user_cards').select('cards_json, filename, uploaded_at, lang_code').eq('user_id', currentUser.id).single();
   if (data && data.cards_json) {
     allCards = data.cards_json;
     currentLang = LANGUAGES.find(l => l.code === data.lang_code) || LANGUAGES[0];
@@ -558,17 +476,19 @@ async function loadSavedCards() {
 }
 
 async function saveCards(filename) {
-  if (isGuest) return;
   await sb.from('user_cards').upsert({
-    user_id: currentUser.id, cards_json: allCards,
-    filename, lang_code: currentLang.code, uploaded_at: new Date().toISOString()
+    user_id: currentUser.id,
+    cards_json: allCards,
+    filename: filename,
+    lang_code: currentLang.code,
+    uploaded_at: new Date().toISOString()
   }, { onConflict: 'user_id' });
 }
 
 // ── Home ──
 function showHome(filename, uploadedAt) {
   show('home-section');
-  if (allCards.length && filename && currentLang) {
+  if (allCards.length > 0 && filename && currentLang) {
     document.getElementById('existing-card').style.display = '';
     document.getElementById('existing-info').textContent = filename + ' — ' + allCards.length + ' words';
     document.getElementById('existing-lang-badge').textContent = currentLang.name;
@@ -580,7 +500,7 @@ function showHome(filename, uploadedAt) {
   }
 }
 
-// ── Language modal ──
+// ── Language picker ──
 function buildLangGrid() {
   const grid = document.getElementById('lang-grid');
   LANGUAGES.forEach(lang => {
@@ -604,26 +524,27 @@ function showLangModal() {
 }
 
 function handleModalClick(e) {
-  if (e.target === document.getElementById('lang-modal')) document.getElementById('lang-modal').style.display = 'none';
+  if (e.target === document.getElementById('lang-modal')) hideLangModal();
+}
+
+function hideLangModal() {
+  document.getElementById('lang-modal').style.display = 'none';
+  pendingCards = []; pendingFilename = '';
 }
 
 async function confirmLanguage() {
-  const sel = document.querySelector('.lang-option.selected');
-  if (!sel) return;
-  currentLang = LANGUAGES.find(l => l.code === sel.dataset.code);
+  const selected = document.querySelector('.lang-option.selected');
+  if (!selected) return;
+  currentLang = LANGUAGES.find(l => l.code === selected.dataset.code);
   document.getElementById('lang-modal').style.display = 'none';
   allCards = pendingCards;
   detectColumns();
-  if (!isGuest) {
-    show('loading-section');
-    await saveCards(pendingFilename);
-    showHome(pendingFilename, new Date().toISOString());
-  } else {
-    goSetup();
-  }
+  show('loading-section');
+  await saveCards(pendingFilename);
+  showHome(pendingFilename, new Date().toISOString());
 }
 
-// ── Load file ──
+// ── Load Excel ──
 async function loadFile(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -664,19 +585,6 @@ function detectColumns() {
 // ── Setup ──
 function goSetup() {
   show('setup-section');
-  // topbar
-  const badge = document.getElementById('setup-user-badge');
-  const signoutBtn = document.getElementById('setup-signout-btn');
-  const uploadBtn = document.getElementById('setup-upload-btn');
-  if (isGuest) {
-    badge.className = 'guest-badge'; badge.textContent = 'Guest';
-    signoutBtn.textContent = 'sign in'; signoutBtn.onclick = () => show('auth-section');
-    uploadBtn.onclick = () => show('guest-section');
-  } else {
-    badge.className = 'user-badge'; badge.textContent = currentUser.user_metadata?.username || currentUser.email;
-    signoutBtn.textContent = 'sign out'; signoutBtn.onclick = signOut;
-    uploadBtn.onclick = () => document.getElementById('file-input').click();
-  }
   document.getElementById('setup-count-line').textContent = allCards.length + ' words';
   document.getElementById('setup-lang-badge').textContent = currentLang ? currentLang.name : '';
   const chips = document.getElementById('category-chips');
@@ -717,7 +625,8 @@ function makeChip(label, val, active) {
 
 function getSelectedCats() {
   const active = [...document.querySelectorAll('#category-chips .chip.active')].map(c => c.dataset.cat);
-  return (!active.length || active.includes('__all__')) ? '__all__' : active;
+  if (!active.length || active.includes('__all__')) return '__all__';
+  return active;
 }
 
 function getCandidates() {
@@ -746,15 +655,15 @@ function updateCountPreview() {
 // ── Session ──
 function shuffle(arr) {
   const a = [...arr];
-  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
 
 function startSession() {
   const cands = getCandidates();
-  const n = Math.min(parseInt(document.getElementById('n-input').value)||cands.length, cands.length);
+  const n = Math.min(parseInt(document.getElementById('n-input').value) || cands.length, cands.length);
   const order = document.getElementById('order-select').value;
-  const picked = order==='random' ? shuffle(cands).slice(0,n) : cands.slice(0,n);
+  const picked = order === 'random' ? shuffle(cands).slice(0, n) : cands.slice(0, n);
   round = 1; beginRound(picked);
 }
 
@@ -765,14 +674,15 @@ function beginRound(cards) {
   document.getElementById('round-badge').textContent = 'Round ' + round;
   const sel = getSelectedCats();
   const catBadge = document.getElementById('cat-badge');
-  if (sel !== '__all__') { catBadge.textContent = sel.map(s => s==='__review__' ? 'Want to Review' : s).join(', '); catBadge.style.display=''; }
-  else catBadge.style.display='none';
+  if (sel !== '__all__') { catBadge.textContent = sel.map(s => s === '__review__' ? 'Want to Review' : s).join(', '); catBadge.style.display = ''; }
+  else catBadge.style.display = 'none';
   updateStats(); showCard();
 }
 
 function showCard() {
   const c = queue[idx];
   flipped = false; answered = false;
+  const langName = currentLang ? currentLang.name.toLowerCase() : 'target';
   document.getElementById('side-label').textContent = 'english';
   document.getElementById('front-text').textContent = c.english;
   document.getElementById('front-text').style.display = '';
@@ -781,10 +691,10 @@ function showCard() {
   document.getElementById('audio-status').textContent = 'hear it';
   document.getElementById('audio-status').classList.remove('speaking');
   const catEl = document.getElementById('card-cat');
-  if (hasCategories && c.category) { catEl.textContent = c.category; catEl.style.display=''; } else catEl.style.display='none';
+  if (hasCategories && c.category) { catEl.textContent = c.category; catEl.style.display = ''; } else catEl.style.display = 'none';
   updateReviewBtn();
-  document.getElementById('progress-fill').style.width = (idx/queue.length*100)+'%';
-  document.getElementById('progress-label').textContent = (idx+1)+' / '+queue.length;
+  document.getElementById('progress-fill').style.width = (idx / queue.length * 100) + '%';
+  document.getElementById('progress-label').textContent = (idx + 1) + ' / ' + queue.length;
 }
 
 function flipCard() {
@@ -792,13 +702,14 @@ function flipCard() {
   const c = queue[idx];
   flipped = true;
   document.getElementById('card').className = 'card flipped';
-  document.getElementById('side-label').textContent = currentLang ? currentLang.name.toLowerCase() : 'target';
+  const langName = currentLang ? currentLang.name.toLowerCase() : 'target language';
+  document.getElementById('side-label').textContent = langName;
   document.getElementById('front-text').style.display = 'none';
   const targetEl = document.getElementById('back-target');
   targetEl.textContent = c.target;
-  targetEl.className = 'card-target'+(currentLang?.rtl?' rtl':'')+(currentLang?.cjk?' cjk':'');
+  targetEl.className = 'card-target' + (currentLang?.rtl ? ' rtl' : '') + (currentLang?.cjk ? ' cjk' : '');
   targetEl.style.display = '';
-  if (c.translit) { document.getElementById('back-translit').textContent = c.translit; document.getElementById('back-translit').style.display=''; }
+  if (c.translit) { document.getElementById('back-translit').textContent = c.translit; document.getElementById('back-translit').style.display = ''; }
   document.getElementById('back-english').textContent = c.english;
   document.getElementById('back-english').style.display = '';
   document.getElementById('audio-chip').style.display = '';
@@ -806,17 +717,17 @@ function flipCard() {
 }
 
 function markAnswer(correct) {
-  if (!flipped||answered) return;
+  if (!flipped || answered) return;
   answered = true;
   if (correct) roundCorrect++; else incorrectIndices.push(idx);
   updateStats();
-  setTimeout(() => { idx++; if (idx>=queue.length) endRound(); else showCard(); }, 160);
+  setTimeout(() => { idx++; if (idx >= queue.length) endRound(); else showCard(); }, 160);
 }
 
 function updateStats() {
   document.getElementById('stat-correct').textContent = roundCorrect;
   document.getElementById('stat-incorrect').textContent = incorrectIndices.length;
-  document.getElementById('stat-remaining').textContent = Math.max(0, queue.length-idx);
+  document.getElementById('stat-remaining').textContent = Math.max(0, queue.length - idx);
 }
 
 function endRound() {
@@ -824,60 +735,51 @@ function endRound() {
   const correct = queue.length - missed.length;
   show('summary-section');
   window._missed = missed;
-
-  // show save prompt for guests
-  const prompt = document.getElementById('guest-save-prompt');
-  prompt.style.display = isGuest ? '' : 'none';
-
   if (!missed.length) {
     document.getElementById('summary-icon').textContent = '🎉';
     document.getElementById('summary-title').textContent = 'Perfect round!';
-    document.getElementById('summary-sub').innerHTML = 'You got all <strong>'+correct+'</strong> cards correct.';
-    document.getElementById('summary-actions').innerHTML =
-      (isGuest ? `<button class="btn amber" onclick="show('auth-section')">Create free account to save progress</button>` : '') +
-      `<button class="btn primary" onclick="restartSame()">Shuffle &amp; go again</button>
-       <button class="btn" onclick="goSetup()">Change session</button>`;
+    document.getElementById('summary-sub').innerHTML = 'You got all <strong>' + correct + '</strong> cards correct.';
+    document.getElementById('summary-actions').innerHTML = `<button class="btn primary" onclick="restartSame()">Shuffle & go again</button><button class="btn" onclick="goSetup()">Change session</button>`;
   } else {
     document.getElementById('summary-icon').textContent = '📋';
-    document.getElementById('summary-title').textContent = 'Round '+round+' done';
-    document.getElementById('summary-sub').innerHTML = '<strong>'+correct+'</strong> correct &nbsp;·&nbsp; <strong>'+missed.length+'</strong> to review';
-    document.getElementById('summary-actions').innerHTML =
-      (isGuest ? `<button class="btn amber" onclick="show('auth-section')">Create free account to save progress</button>` : '') +
-      `<button class="btn primary" onclick="startReview()">Practice the ${missed.length} missed word${missed.length>1?'s':''}</button>
-       <button class="btn" onclick="restartSame()">Start this set over</button>
-       <button class="btn" onclick="goSetup()">Change session</button>
-       <button class="btn" onclick="goHome()">Home</button>`;
+    document.getElementById('summary-title').textContent = 'Round ' + round + ' done';
+    document.getElementById('summary-sub').innerHTML = '<strong>' + correct + '</strong> correct &nbsp;·&nbsp; <strong>' + missed.length + '</strong> to review';
+    document.getElementById('summary-actions').innerHTML = `
+      <button class="btn primary" onclick="startReview()">Practice the ${missed.length} missed word${missed.length>1?'s':''}</button>
+      <button class="btn" onclick="restartSame()">Start this set over</button>
+      <button class="btn" onclick="goSetup()">Change session</button>
+      <button class="btn" onclick="showHome()">Home</button>`;
   }
 }
 
 function startReview() { round++; beginRound(shuffle(window._missed)); }
-function restartSame() { round=1; beginRound(shuffle(queue)); }
+function restartSame() { round = 1; beginRound(shuffle(queue)); }
 
 // ── Audio ──
 function speakTarget() {
-  if (!flipped||!queue[idx]||!currentLang) return;
+  if (!flipped || !queue[idx] || !currentLang) return;
   if (!window.speechSynthesis) { alert('Your browser does not support text-to-speech.'); return; }
   window.speechSynthesis.cancel();
   const utt = new SpeechSynthesisUtterance(queue[idx].target);
   utt.lang = currentLang.speechLang;
   const voices = window.speechSynthesis.getVoices();
-  const match = voices.find(v=>v.lang===currentLang.speechLang)||voices.find(v=>v.lang.startsWith(currentLang.code));
+  const match = voices.find(v => v.lang === currentLang.speechLang) || voices.find(v => v.lang.startsWith(currentLang.code));
   if (match) utt.voice = match;
   const s = document.getElementById('audio-status');
-  utt.onstart = () => { s.textContent='playing...'; s.classList.add('speaking'); };
-  utt.onend   = () => { s.textContent='hear it';    s.classList.remove('speaking'); };
+  utt.onstart = () => { s.textContent = 'playing...'; s.classList.add('speaking'); };
+  utt.onend = () => { s.textContent = 'hear it'; s.classList.remove('speaking'); };
   window.speechSynthesis.speak(utt);
 }
 
 // ── Keys ──
 document.addEventListener('keydown', function(e) {
   if (['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) return;
-  if (document.getElementById('lang-modal').style.display!=='none') return;
-  if (e.code==='Space') { e.preventDefault(); flipCard(); }
-  else if (e.code==='ArrowUp') { e.preventDefault(); markAnswer(true); }
-  else if (e.code==='ArrowDown') { e.preventDefault(); markAnswer(false); }
-  else if (e.key==='a'||e.key==='A') speakTarget();
-  else if (e.key==='s'||e.key==='S') { if (queue[idx]) toggleReview({stopPropagation:()=>{}}); }
+  if (document.getElementById('lang-modal').style.display !== 'none') return;
+  if (e.code === 'Space') { e.preventDefault(); flipCard(); }
+  else if (e.code === 'ArrowUp') { e.preventDefault(); markAnswer(true); }
+  else if (e.code === 'ArrowDown') { e.preventDefault(); markAnswer(false); }
+  else if (e.key === 'a' || e.key === 'A') speakTarget();
+  else if (e.key === 's' || e.key === 'S') { if (queue[idx]) toggleReview({ stopPropagation: ()=>{} }); }
 });
 
 window.speechSynthesis && window.speechSynthesis.getVoices();
